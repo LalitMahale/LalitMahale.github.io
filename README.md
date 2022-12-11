@@ -1,1 +1,1 @@
-# LalitMahale.i.github.io
+# LalitMahale.github.io
