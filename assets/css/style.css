@@ -494,7 +494,8 @@ section {
   margin: 0;
   text-transform: uppercase;
   display: block;
-  font-weight: 800;
+  font-weight: 500;
+  font-size: 25px;
   font-family: "Poppins", sans-serif;
   color: #45505b;
 }
