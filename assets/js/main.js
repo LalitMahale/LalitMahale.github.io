@@ -575,8 +575,9 @@
     function showOptions() {
         optionsContainer.innerHTML = `
             <button onclick="sendOption('Last Updated Date')">Last Updated Date</button>
-            <button onclick="sendOption('Help')">Help</button>
             <button onclick="sendOption('About Me')">About Me</button>
+            <button onclick="sendOption('Help')">Help</button>
+
         `;
     }
   
