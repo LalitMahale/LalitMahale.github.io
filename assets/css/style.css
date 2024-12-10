@@ -1241,16 +1241,19 @@ section {
 
 /* styles.css */
 /* styles.css */
+
+/* General Styles */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
+/* Chat Button */
 .chat-button {
   position: fixed;
   bottom: 60px;
-  right: 60px;
+  right: 5px;
   padding: 0;
   background-color: transparent;
   border: none;
@@ -1267,20 +1270,22 @@ body {
   object-fit: cover;
 }
 
+/* Chat Window */
 .chat-window {
   display: none;
   position: fixed;
-  bottom: 150px;
-  right: 115px;
+  bottom: 155px;
+  right: 60px;
   width: 300px;
   border: 1px solid #ccc;
   border-radius: 8px;
-  background-color: #fff;
+  background-color:  #fff;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 10px;
   z-index: 1000;
 }
 
+/* Chat Header */
 .chat-header {
   display: flex;
   justify-content: space-between;
@@ -1294,13 +1299,16 @@ body {
   cursor: pointer;
 }
 
+/* Chat Content */
 .chat-content {
   margin-top: 10px;
   max-height: 300px;
   overflow-y: auto;
 }
 
-.bot-message, .user-message {
+/* Messages */
+.bot-message,
+.user-message {
   margin: 5px 0;
   padding: 10px;
   border-radius: 5px;
@@ -1311,15 +1319,42 @@ body {
 }
 
 .user-message {
-  background-color: #007bff;
+  background-color: #d7e0e9;
   color: white;
-  text-align: right;
+  text-align: center;
 }
 
+/* User Input */
 .user-input {
   width: 100%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
   margin-top: 10px;
+}
+
+/* Options Container */
+.options-container {
+  display: flex;
+  flex-direction: column; /* Align buttons vertically */
+  gap: 50px; /* Add space between buttons */
+  margin-top: 10px;
+}
+
+/* Chat Options Buttons */
+.chat-option {
+  width: 100%; /* Make the buttons span the full container width */
+  padding: 10px;
+  border: 1px solid #121517;
+  border-radius: 100px;
+  background-color: #007bff;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.chat-option:hover {
+  background-color: #0056b3; /* Darker shade for hover effect */
 }
