@@ -538,103 +538,108 @@
 
   // Chat Window Integration Below:
 
-  // Show chat window and options
-  const chatButton = select('#chatButton');
-  const chatWindow = select('#chatWindow');
-  const closeChatButton = select('#closeChat');
-  const optionsContainer = select('#options');
-  const userInput = select('#userInput');
+  document.addEventListener('DOMContentLoaded', function() {
+    const chatButton = document.getElementById('chatButton');
+    const chatWindow = document.getElementById('chatWindow');
+    const closeChatButton = document.getElementById('closeChat');
+    const optionsContainer = document.getElementById('options');
+    const userInput = document.getElementById('userInput');
   
-  // Show chat window
-  if (chatButton) {
+    // Automatically open chat window when page loads
+    chatWindow.style.display = 'block';  // Show the chat window
+    showOptions();  // Show the available options for the user
+  
+    // Display a message to guide the user (optional)
+    // displayBotMessage('Hello! How can I help you today? You can ask for the "Last Updated Date", or use the buttons below.');
+  
+    // Show chat window when the user clicks the bot icon
     chatButton.addEventListener('click', function() {
-      chatWindow.style.display = 'block';
-      showOptions();
+        chatWindow.style.display = 'block';
+        showOptions();
     });
-  }
-
-  // Close the chat window
-  if (closeChatButton) {
+  
+    // Close the chat window
     closeChatButton.addEventListener('click', function() {
-      chatWindow.style.display = 'none';
+        chatWindow.style.display = 'none';
     });
-  }
-
-  // Handle user input and options
-  if (userInput) {
+  
+    // Handle user input and options
     userInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-          handleUserInput(userInput.value);
-          userInput.value = '';  // Clear input field
-      }
+        if (e.key === 'Enter') {
+            handleUserInput(userInput.value);
+            userInput.value = '';  // Clear input field
+        }
     });
-  }
-
-  // Function to show options in the chat window
-  function showOptions() {
-      optionsContainer.innerHTML = `
-          <button onclick="sendOption('Last Updated Date')">Last Updated Date</button>
-          <button onclick="sendOption('Help')">Help</button>
-          <button onclick="sendOption('Developer Details')">Developer Details</button>
-      `;
-  }
-
-  // Function to send selected option and process response
-  window.sendOption = function(option) {
-      displayUserMessage(option); // Display selected option from user
-      if (option === 'Last Updated Date') {
-          fetchLastUpdatedDate();
-      } else if (option === 'Help') {
-          displayBotMessage('I can assist you with providing the last updated date.');
+  
+    // Function to show options in the chat window
+    function showOptions() {
+        optionsContainer.innerHTML = `
+            <button onclick="sendOption('Last Updated Date')">Last Updated Date</button>
+            <button onclick="sendOption('Help')">Help</button>
+            <button onclick="sendOption('About Me')">About Me</button>
+        `;
+    }
+  
+    // Function to send selected option and process response
+    window.sendOption = function(option) {
+        displayUserMessage(option); // Display selected option from user
+        if (option === 'Last Updated Date') {
+            fetchLastUpdatedDate();
+        } else if (option === 'About Me') {
+          displayBotMessage(`Hi I'm Lalit Mahale.
+      I'm an AI/ML Expert.
+      For more details, you can contact me at +91 8087830153.`);
       }
-  }
-
-  // Function to handle user input
-  function handleUserInput(input) {
-      displayUserMessage(input);  // Display user message
-      // Process user input
-      if (input.toLowerCase() === 'last updated date') {
-          fetchLastUpdatedDate();
-      } else {
-          displayBotMessage('I am sorry, I didn\'t understand that. You can ask for the "Last Updated Date".');
-      }
-  }
-
-  // Display bot's message
-  function displayBotMessage(message) {
-      const botMessageDiv = document.createElement('div');
-      botMessageDiv.classList.add('bot-message');
-      botMessageDiv.textContent = message;
-      select('.chat-content').appendChild(botMessageDiv);
-      scrollToBottom();
-  }
-
-  // Display user's message
-  function displayUserMessage(message) {
-      const userMessageDiv = document.createElement('div');
-      userMessageDiv.classList.add('user-message');
-      userMessageDiv.textContent = message;
-      select('.chat-content').appendChild(userMessageDiv);
-      scrollToBottom();
-  }
-
-  // Scroll to the bottom of the chat content
-  function scrollToBottom() {
-      const chatContent = select('.chat-content');
-      chatContent.scrollTop = chatContent.scrollHeight;
-  }
-
-  // Fetch last updated date from the backend
-  function fetchLastUpdatedDate() {
-      // Assuming you have an API that provides this data
-      fetch('https://api.example.com/last-updated')
-          .then(response => response.json())
-          .then(data => {
-              displayBotMessage(`The last updated date is: ${data.lastUpdatedDate}`);
-          })
-          .catch(error => {
-              displayBotMessage('Sorry, I was unable to fetch the last updated date.');
-          });
-  }
+    }
+  
+    // Function to handle user input
+    function handleUserInput(input) {
+        displayUserMessage(input);  // Display user message
+        // Process user input
+        if (input.toLowerCase() === 'last updated date') {
+            fetchLastUpdatedDate();
+        } else {
+            displayBotMessage('I am sorry, I didn\'t understand that. You can ask for the "Last Updated Date".');
+        }
+    }
+  
+    // Display bot's message
+    function displayBotMessage(message) {
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.classList.add('bot-message');
+        botMessageDiv.textContent = message;
+        document.querySelector('.chat-content').appendChild(botMessageDiv);
+        scrollToBottom();
+    }
+  
+    // Display user's message
+    function displayUserMessage(message) {
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.classList.add('user-message');
+        userMessageDiv.textContent = message;
+        document.querySelector('.chat-content').appendChild(userMessageDiv);
+        scrollToBottom();
+    }
+  
+    // Scroll to the bottom of the chat content
+    function scrollToBottom() {
+        const chatContent = document.querySelector('.chat-content');
+        chatContent.scrollTop = chatContent.scrollHeight;
+    }
+  
+    // Fetch last updated date from the backend
+    function fetchLastUpdatedDate() {
+        // Assuming you have an API that provides this data
+        fetch('https://api.example.com/last-updated')
+            .then(response => response.json())
+            .then(data => {
+                displayBotMessage(`The last updated date is: ${data.lastUpdatedDate}`);
+            })
+            .catch(error => {
+                displayBotMessage('Sorry, I was unable to fetch the last updated date.');
+            });
+    }
+  });
+  
 
 })();
