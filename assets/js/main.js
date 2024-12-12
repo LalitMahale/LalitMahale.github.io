@@ -547,11 +547,11 @@
     const closeChatButton = document.getElementById('closeChat');
     const optionsContainer = document.getElementById('options');
     const userInput = document.getElementById('userInput');
-    const chatContent = document.querySelector('.chat-content'); // Make sure this class exists
+    const chatContent = document.querySelector('.chat-content');  // Make sure this class exists in your HTML
   
     // Automatically open chat window when page loads
     chatWindow.style.display = 'block'; // Show the chat window
-    showOptions(); // Show initial options for the user
+    showOptions(); // Show the initial options for the user
   
     // Show chat window when the user clicks the bot icon
     chatButton.addEventListener('click', function () {
@@ -570,40 +570,72 @@
         const userMessage = userInput.value.trim();
         if (userMessage) {
           displayUserMessage(userMessage);  // Display user message
-          sendTranslationRequest(userMessage);  // Send user input to translation API
+          sendMessageToBackend(userMessage);  // Send message to backend
           userInput.value = '';  // Clear input field
         }
       }
     });
   
-    // Function to send user message to translation API
-    function sendTranslationRequest(text) {
-      const url = "https://lalit1997-test-api.hf.space/translate";
-      
-      // Prepare parameters as URL query string
-      const params = new URLSearchParams({ text: text });
-  
-      // Make the GET request with the parameters
-      fetch(`${url}?${params.toString()}`)
-        .then(response => {
-          console.log("Response Status Code:", response.status); // Print status code
-          
-          // Parse the JSON response
-          return response.json().then(data => {
-            console.log("Response JSON:", data); // Log JSON data
-  
-            // Display translated text as bot message
-            const translatedText = data.result || "Sorry, no translation available.";
-            displayBotMessage(`Translated Text: ${translatedText}`);
-          });
-        })
-        .catch(error => {
-          console.error("Error:", error);
-          displayBotMessage("Failed to get a response from the translation API.");
-        });
+    // Function to show initial options
+    function showOptions() {
+      optionsContainer.innerHTML = `
+        <button class="chat-option" onclick="sendOption('Projects')">View Projects</button>
+        <button class="chat-option" onclick="sendOption('About Me')">About Me</button>
+        <button class="chat-option" onclick="sendOption('Help')">Help</button>
+      `;
     }
   
-    // Function to display the bot's message
+    // Function to send user message to the backend
+    // function sendMessageToBackend(message) {
+    //   fetch('https://lalit1997-test-api.hf.space', {  // Adjust this URL if needed
+    //     method: 'GET',
+    //     headers: {
+    //       'Content-Type': 'application/json'
+    //     },
+    //     body: JSON.stringify({ message })  // Send the user message
+    //   })
+    //   .then(response => {
+    //     // Print the status code of the response
+    //     console.log("Status Code:", response.status);
+        
+    //     // Get the response content (JSON or text)
+    //     return response.json().then(data => {
+    //       // Log both status code and content (response body) to the console
+    //       console.log("Response Body:", data);
+    
+    //       // Display the status code and the full response content in the chat window
+    //       const botMessage = `Status Code: ${response.status}\nResponse Body:\n${JSON.stringify(data, null, 2)}`;
+    //       displayBotMessage(botMessage);
+    //     });
+    //   })
+    //   .catch(error => {
+    //     console.error('Error sending message to backend:', error);
+    //     displayBotMessage('Sorry, there was an error processing your request.');
+    //   });
+    // }
+    
+    function sendMessageToBackend(message) {
+      const url = "https://lalit1997-test-api.hf.space/translate";
+
+      const params = new URLSearchParams({text:message});
+
+      fetch(`${url}?${params.toString()}`)
+      .then(response => {console.log("Response status code :",response.status);
+
+        return response.json().then(data => {
+          console.log("Response JSON :",data);
+
+          const text = data.result || "Sorry, I didn't understand.";
+          displayBotMessage(text)
+        });
+      })
+      .catch(error => {
+        console.error('Error:',error);
+        displayBotMessage("There is some error")
+      });
+    }
+  
+    // Function to display bot's message
     function displayBotMessage(message) {
       const botMessageDiv = document.createElement('div');
       botMessageDiv.classList.add('bot-message');
@@ -623,17 +655,9 @@
   
     // Scroll to the bottom of the chat content
     function scrollToBottom() {
-      const chatContent = document.querySelector('.chat-content');
       chatContent.scrollTop = chatContent.scrollHeight;
-    }
-  
-    // Function to show initial options
-    function showOptions() {
-      optionsContainer.innerHTML = `
-        <button class="chat-option" onclick="sendOption('Projects')">View Projects</button>
-        <button class="chat-option" onclick="sendOption('About Me')">About Me</button>
-        <button class="chat-option" onclick="sendOption('Help')">Help</button>
-      `;
     }
   });
   
+
+})();
