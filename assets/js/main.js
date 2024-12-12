@@ -532,9 +532,13 @@
   });
 
   /**
-   * Initiate Pure Counter 
+   * chatbot integration
    */
+
+
   new PureCounter();
+
+
 
   // Chat Window Integration Below:
   document.addEventListener('DOMContentLoaded', function () {
@@ -543,10 +547,11 @@
     const closeChatButton = document.getElementById('closeChat');
     const optionsContainer = document.getElementById('options');
     const userInput = document.getElementById('userInput');
+    const chatContent = document.querySelector('.chat-content'); // Make sure this class exists
   
     // Automatically open chat window when page loads
     chatWindow.style.display = 'block'; // Show the chat window
-    showOptions(); // Show the initial options for the user
+    showOptions(); // Show initial options for the user
   
     // Show chat window when the user clicks the bot icon
     chatButton.addEventListener('click', function () {
@@ -559,70 +564,60 @@
       chatWindow.style.display = 'none';
     });
   
-    // Function to show initial options
-    function showOptions() {
-      optionsContainer.innerHTML = `
-        <button class="chat-option" onclick="sendOption('Projects')">View Projects</button>
-        <button class="chat-option" onclick="sendOption('About Me')">About Me</button>
-        <button class="chat-option" onclick="sendOption('Help')">Help</button>
-      `;
+    // Listen for Enter key to send the user message
+    userInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') {
+        const userMessage = userInput.value.trim();
+        if (userMessage) {
+          displayUserMessage(userMessage);  // Display user message
+          sendTranslationRequest(userMessage);  // Send user input to translation API
+          userInput.value = '';  // Clear input field
+        }
+      }
+    });
+  
+    // Function to send user message to translation API
+    function sendTranslationRequest(text) {
+      const url = "https://lalit1997-test-api.hf.space/translate";
+      
+      // Prepare parameters as URL query string
+      const params = new URLSearchParams({ text: text });
+  
+      // Make the GET request with the parameters
+      fetch(`${url}?${params.toString()}`)
+        .then(response => {
+          console.log("Response Status Code:", response.status); // Print status code
+          
+          // Parse the JSON response
+          return response.json().then(data => {
+            console.log("Response JSON:", data); // Log JSON data
+  
+            // Display translated text as bot message
+            const translatedText = data.result || "Sorry, no translation available.";
+            displayBotMessage(`Translated Text: ${translatedText}`);
+          });
+        })
+        .catch(error => {
+          console.error("Error:", error);
+          displayBotMessage("Failed to get a response from the translation API.");
+        });
     }
   
-    // Function to send selected option and process response
-    window.sendOption = function (option) {
-      displayUserMessage(option); // Display selected option from the user
-      if (option === 'Projects') {
-        showAdditionalButtons();
-      } else if (option === 'About Me') {
-        displayBotMessage(`Hi, I'm Lalit Mahale. I'm an AI/ML Expert. For more details, you can contact me at +91 8087830153.`);
-      } else if (option === 'Help') {
-        displayBotMessage('How can I assist you? Feel free to ask any questions. or mail me at lalitbmahale121@gmail.com');
-      } else if (!optionsContainer) {
-        console.error('Options container not found in the DOM.');
-        return;
-      }
-    };
-  
-    // Show additional buttons for "Last Updated Date"
-    function showAdditionalButtons() {
-      // Display bot message
-      displayBotMessage('Please choose an option below:');
-  
-      // Create a container for the additional buttons
-      const additionalButtons = document.createElement('div');
-      additionalButtons.innerHTML = `
-          <button class="chat-option" onclick="redirectToURL('https://example.com/date1')">Option 1</button>
-          <button class="chat-option" onclick="redirectToURL('https://example.com/date2')">Option 2</button>
-      `;
-  
-      // Append the additional buttons to the chat content
-      document.querySelector('.chat-content').appendChild(additionalButtons);
-      scrollToBottom(); // Ensure the user can see the new buttons
-  }
-  
-  
-  
-    // Redirect to the specified URL
-    window.redirectToURL = function (url) {
-      // displayUserMessage(`Redirecting to ${url}`);
-      window.open(url, '_blank'); // Opens the URL in a new tab
-    };
-  
-    // Display bot's message
+    // Function to display the bot's message
     function displayBotMessage(message) {
       const botMessageDiv = document.createElement('div');
       botMessageDiv.classList.add('bot-message');
       botMessageDiv.textContent = message;
-      document.querySelector('.chat-content').appendChild(botMessageDiv);
+      chatContent.appendChild(botMessageDiv);
       scrollToBottom();
     }
   
-    // Display user's message
+    // Function to display user's message
     function displayUserMessage(message) {
       const userMessageDiv = document.createElement('div');
       userMessageDiv.classList.add('user-message');
       userMessageDiv.textContent = message;
-      document.querySelector('.chat-content').appendChild(userMessageDiv);
+      chatContent.appendChild(userMessageDiv);
       scrollToBottom();
     }
   
@@ -631,7 +626,14 @@
       const chatContent = document.querySelector('.chat-content');
       chatContent.scrollTop = chatContent.scrollHeight;
     }
-  });  
   
-
-})();
+    // Function to show initial options
+    function showOptions() {
+      optionsContainer.innerHTML = `
+        <button class="chat-option" onclick="sendOption('Projects')">View Projects</button>
+        <button class="chat-option" onclick="sendOption('About Me')">About Me</button>
+        <button class="chat-option" onclick="sendOption('Help')">Help</button>
+      `;
+    }
+  });
+  
