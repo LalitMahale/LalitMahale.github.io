@@ -547,117 +547,146 @@
     const closeChatButton = document.getElementById('closeChat');
     const optionsContainer = document.getElementById('options');
     const userInput = document.getElementById('userInput');
-    const chatContent = document.querySelector('.chat-content');  // Make sure this class exists in your HTML
-  
+    const chatContent = document.querySelector('.chat-content'); // Ensure this class exists in your HTML
+    const sendButton = document.getElementById('sendButton'); // Send button
+
     // Automatically open chat window when page loads
-    chatWindow.style.display = 'block'; // Show the chat window
-    showOptions(); // Show the initial options for the user
+    chatWindow.style.display = 'block'; 
+    showOptions(); 
   
     // Show chat window when the user clicks the bot icon
     chatButton.addEventListener('click', function () {
-      chatWindow.style.display = 'block';
-      showOptions();
+        chatWindow.style.display = 'block';
+        showOptions();
     });
   
     // Close the chat window
     closeChatButton.addEventListener('click', function () {
-      chatWindow.style.display = 'none';
+        chatWindow.style.display = 'none';
     });
   
     // Listen for Enter key to send the user message
     userInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') {
-        const userMessage = userInput.value.trim();
-        if (userMessage) {
-          displayUserMessage(userMessage);  // Display user message
-          sendMessageToBackend(userMessage);  // Send message to backend
-          userInput.value = '';  // Clear input field
+        if (e.key === 'Enter') {
+            const userMessage = userInput.value.trim();
+            if (userMessage) {
+                displayUserMessage(userMessage);
+                sendMessageToBackend(userMessage);
+                userInput.value = '';
+            }
         }
-      }
     });
   
     // Function to show initial options
     function showOptions() {
-      optionsContainer.innerHTML = `
-        <button class="chat-option" onclick="sendOption('Projects')">View Projects</button>
-        <button class="chat-option" onclick="sendOption('About Me')">About Me</button>
-        <button class="chat-option" onclick="sendOption('Help')">Help</button>
-      `;
+        optionsContainer.innerHTML = `
+            <button class="chat-option" data-option="Projects">View Projects</button>
+            <button class="chat-option" data-option="About Me">About Me</button>
+            <button class="chat-option" data-option="Help">Help</button>
+        `;
+        addEventListenersToButtons();
     }
   
-    // Function to send user message to the backend
-    // function sendMessageToBackend(message) {
-    //   fetch('https://lalit1997-test-api.hf.space', {  // Adjust this URL if needed
-    //     method: 'GET',
-    //     headers: {
-    //       'Content-Type': 'application/json'
-    //     },
-    //     body: JSON.stringify({ message })  // Send the user message
-    //   })
-    //   .then(response => {
-    //     // Print the status code of the response
-    //     console.log("Status Code:", response.status);
-        
-    //     // Get the response content (JSON or text)
-    //     return response.json().then(data => {
-    //       // Log both status code and content (response body) to the console
-    //       console.log("Response Body:", data);
-    
-    //       // Display the status code and the full response content in the chat window
-    //       const botMessage = `Status Code: ${response.status}\nResponse Body:\n${JSON.stringify(data, null, 2)}`;
-    //       displayBotMessage(botMessage);
-    //     });
-    //   })
-    //   .catch(error => {
-    //     console.error('Error sending message to backend:', error);
-    //     displayBotMessage('Sorry, there was an error processing your request.');
-    //   });
-    // }
-    
-    function sendMessageToBackend(message) {
-      const url = "https://lalit1997-test-api.hf.space/translate";
-
-      const params = new URLSearchParams({text:message});
-
-      fetch(`${url}?${params.toString()}`)
-      .then(response => {console.log("Response status code :",response.status);
-
-        return response.json().then(data => {
-          console.log("Response JSON :",data);
-
-          const text = data.result || "Sorry, I didn't understand.";
-          displayBotMessage(text)
+    // Function to add event listeners to buttons
+    function addEventListenersToButtons() {
+        const buttons = optionsContainer.querySelectorAll('.chat-option');
+        buttons.forEach(button => {
+            button.addEventListener('click', function () {
+                const option = button.getAttribute('data-option');
+                handleOption(option);
+            });
         });
-      })
-      .catch(error => {
-        console.error('Error:',error);
-        displayBotMessage("There is some error")
-      });
+    }
+  
+    // Handle button options
+    function handleOption(option) {
+        if (option === 'Projects') {
+            showProjectOptions();
+        } else if (option === 'About Me') {
+            displayUserMessage("About Me");
+            displayBotMessage("👋 Hi I'm Lalit Mahale. I'm AI/ML Expert. For More detail 🤙call at 📱 8087830153");
+        } else if (option === 'Help') {
+            displayUserMessage("Help"); 
+            displayBotMessage("For 🤖 assistance, you can email me at 📧 mahalelalit45@gmail.com");
+        }
+    }
+  
+    // Show project options
+    function showProjectOptions() {
+        optionsContainer.innerHTML = `
+            <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
+            <button class="chat-option" data-link="https://example.com/project2">Option 2</button>
+            <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
+            <button class="chat-option" data-link="https://example.com/project2">Option 2</button>
+            <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
+            <button class="chat-option" data-link="https://example.com/project2">Option 2</button>            
+            <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
+            <button class="chat-option" data-link="https://example.com/project2">Option 2</button>
+            <button class="chat-option" data-option="Back">Back</button>
+        `;
+        const buttons = optionsContainer.querySelectorAll('.chat-option');
+        buttons.forEach(button => {
+            if (button.getAttribute('data-link')) {
+                // Redirect to the link
+                button.addEventListener('click', function () {
+                    const link = button.getAttribute('data-link');
+                    window.open(link, '_blank'); // Open link in a new tab
+                });
+            } else {
+                // Handle "Back" button
+                button.addEventListener('click', function () {
+                    showOptions(); // Go back to the main menu
+                });
+            }
+        });
+    }
+  
+    // Function to send a message to the backend
+    function sendMessageToBackend(message) {
+        const url = "https://lalit1997-test-api.hf.space/translate";
+
+        const params = new URLSearchParams({ text: message });
+
+        fetch(`${url}?${params.toString()}`)
+            .then(response => {
+                console.log("Response status code:", response.status);
+
+                return response.json().then(data => {
+                    console.log("Response JSON:", data);
+
+                    const text = data.result || "Sorry, I didn't understand.";
+                    displayBotMessage(text);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                displayBotMessage("There is some error");
+            });
     }
   
     // Function to display bot's message
     function displayBotMessage(message) {
-      const botMessageDiv = document.createElement('div');
-      botMessageDiv.classList.add('bot-message');
-      botMessageDiv.textContent = message;
-      chatContent.appendChild(botMessageDiv);
-      scrollToBottom();
+        const botMessageDiv = document.createElement('div');
+        botMessageDiv.classList.add('bot-message');
+        botMessageDiv.textContent = message;
+        chatContent.appendChild(botMessageDiv);
+        scrollToBottom();
     }
   
     // Function to display user's message
     function displayUserMessage(message) {
-      const userMessageDiv = document.createElement('div');
-      userMessageDiv.classList.add('user-message');
-      userMessageDiv.textContent = message;
-      chatContent.appendChild(userMessageDiv);
-      scrollToBottom();
+        const userMessageDiv = document.createElement('div');
+        userMessageDiv.classList.add('user-message');
+        userMessageDiv.textContent = message;
+        chatContent.appendChild(userMessageDiv);
+        scrollToBottom();
     }
   
     // Scroll to the bottom of the chat content
     function scrollToBottom() {
-      chatContent.scrollTop = chatContent.scrollHeight;
+        chatContent.scrollTop = chatContent.scrollHeight;
     }
-  });
-  
+});
+
 
 })();
