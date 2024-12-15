@@ -614,14 +614,8 @@
     // Show project options
     function showProjectOptions() {
         optionsContainer.innerHTML = `
-            <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
-            <button class="chat-option" data-link="https://example.com/project2">Option 2</button>
-            <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
-            <button class="chat-option" data-link="https://example.com/project2">Option 2</button>
-            <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
-            <button class="chat-option" data-link="https://example.com/project2">Option 2</button>            
-            <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
-            <button class="chat-option" data-link="https://example.com/project2">Option 2</button>
+            <button class="chat-option" data-link="https://huggingface.co/spaces/Lalit1997/medical-report-analyzer">Medical Report Analyzer</button>
+            
             <button class="chat-option" data-option="Back">Back</button>
         `;
         const buttons = optionsContainer.querySelectorAll('.chat-option');
