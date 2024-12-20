@@ -637,7 +637,7 @@
   
     // Function to send a message to the backend
     function sendMessageToBackend(message) {
-        const url = "https://lalit1997-test-api.hf.space/translate";
+        const url =  "https://lalit1997-test-api.hf.space/chatbot";
 
         const params = new URLSearchParams({ text: message });
 
