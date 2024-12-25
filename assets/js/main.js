@@ -615,7 +615,8 @@
     function showProjectOptions() {
         optionsContainer.innerHTML = `
             <button class="chat-option" data-link="https://huggingface.co/spaces/Lalit1997/medical-report-analyzer">Medical Report Analyzer</button>
-            
+            <button class="chat-option" data-link="https://huggingface.co/spaces/Lalit1997/all-in-one-summarizer">All in One Document Summarizer</button>
+
             <button class="chat-option" data-option="Back">Back</button>
         `;
         const buttons = optionsContainer.querySelectorAll('.chat-option');
@@ -658,7 +659,7 @@
             });
     }
   
-    // Function to display bot's message
+    // Function to display bot's message https://huggingface.co/spaces/Lalit1997/all-in-one-summarizer
     function displayBotMessage(message) {
         const botMessageDiv = document.createElement('div');
         botMessageDiv.classList.add('bot-message');
