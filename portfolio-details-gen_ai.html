@@ -5,8 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-
-  <title>Portfolio Details </title>
+  <title>Portfolio Details</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -27,60 +26,62 @@
 
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+
+  <style>
+    .project-top-section {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    .project-info, .project-description {
+      flex: 1;
+      min-width: 300px;
+    }
+    .iframe-container {
+      width: 100%;
+      margin-top: 20px;
+    }
+    .iframe-container iframe {
+      width: 100%;
+      height: 600px;
+      border: none;
+    }
+  </style>
 </head>
 
 <body>
 
   <main id="main">
-
-    <!-- ======= Portfolio Details Section ======= -->
     <section id="portfolio-details" class="portfolio-details">
       <div class="container">
 
-        <div class="row gy-4">
-
-          <div class="col-lg-8">
-            <div class="portfolio-details-slider swiper">
-              <div class="swiper-wrapper align-items-center">
-
-                <div class="swiper-slide">
-                  <img src="assets/img/portfolio/medical_report_analyzer.gif" alt="">
-                </div>
-
-                <!-- <div class="swiper-slide">
-                  <img src="assets/img/portfolio/uber2.jpg" alt="">
-                </div> -->
-
-                <!-- <div class="swiper-slide"> -->
-                  <!-- <img src="assets/img/portfolio/portfolio-details-3.jpg" alt=""> -->
-                <!-- </div> -->
-
-              </div>
-              <div class="swiper-pagination"></div>
-            </div>
+        <!-- Top Section: Project Information and Description -->
+        <div class="project-top-section">
+          <div class="project-info">
+            <h3>Project Information</h3>
+            <ul>
+              <li><strong>Project:</strong> Medical Report Analyzer</li>
+              <li><strong>Project Date:</strong> 22 Oct, 2024</li>
+              <li><strong>Project URL:</strong> <a href="https://github.com/LalitMahale/Medical-Report-Analysis-using-LLM" target="_main">View</a></li>
+            </ul>
           </div>
-
-          <div class="col-lg-4">
-            <div class="portfolio-info">
-              <h3>Project information</h3>
-              <ul>
-                <li><strong>Project</strong>: Medical Report Analyzer</li>
-                <!-- <li><strong>Client</strong>: ASU Company</li> -->
-                <li><strong>Project date</strong>: 22 Oct, 2024</li>
-                <li><strong>Project URL</strong>: <a href="https://github.com/LalitMahale/Medical-Report-Analysis-using-LLM" target="_main">View</a></li>
-              </ul>
-            </div>
-            <div class="portfolio-description">
-              <h2>About Project</h2>
-              <p>
-                🔍 This project is a Medical Report Analysis System that simplifies the explanation of medical reports using AI 🧠 and provides natural healing suggestions 🌱.              </p>
-            </div>
+          <div class="project-description">
+            <h3>About Project</h3>
+            <p>
+              🔍 This project is a Medical Report Analysis System that simplifies the explanation of medical reports using AI 🧠 and provides natural healing suggestions 🌱.
+            </p>
           </div>
         </div>
-      </div>
-    </section><!-- End Portfolio Details Section -->
 
-  </main><!-- End #main -->
+        <!-- Full-Width Iframe Section -->
+        <div class="iframe-container">
+          <iframe src="https://lalit1997-medical-report-analyzer.hf.space"></iframe>
+        </div>
+
+      </div>
+    </section>
+  </main>
 
   <div id="preloader"></div>
   <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
@@ -102,3 +103,4 @@
 </body>
 
 </html>
+    
