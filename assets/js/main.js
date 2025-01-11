@@ -539,7 +539,6 @@
   new PureCounter();
 
 
-
   // Chat Window Integration Below:
   document.addEventListener('DOMContentLoaded', function () {
     const chatButton = document.getElementById('chatButton');
@@ -637,17 +636,14 @@
     }
   
     // Function to send a message to the backend
-    require('dotenv').config();
 
-    const access_token = process.env.TOKEN; // Load the token from .env
-    
     function sendMessageToBackend(message) {
         const url = "https://lalit1997-test-api.hf.space/chatbot";
     
         // Construct the payload as query parameters
         const params = new URLSearchParams({
             text: message,   // User's input
-            token: access_token // Token from environment variable
+            token: 'AIzaSyB3wI2r6ZgQnYQ3V39PX5S0zWSRqy5ldYw_Lalit' // Token from environment variable
         });
     
         // Make the API GET request
@@ -666,7 +662,7 @@
     
                 let responseText;
                 try {
-                    responseText = JSON.parse(data).result || "Sorry, I didn't understand.";
+                    responseText = JSON.parse(data).result || "Sorry, I didn't -understand.";
                 } catch (e) {
                     responseText = data || "Unexpected response from the server.";
                 }
