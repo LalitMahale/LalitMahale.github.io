@@ -639,30 +639,46 @@
     // Function to send a message to the backend
     require('dotenv').config();
 
-    const access_token = process.env.TOKEN;
-
+    const access_token = process.env.TOKEN; // Load the token from .env
+    
     function sendMessageToBackend(message) {
-        const url =  "https://lalit1997-test-api.hf.space/chatbot";
-
-        const params = new URLSearchParams({ text: message ,token :access_token });
-
+        const url = "https://lalit1997-test-api.hf.space/chatbot";
+    
+        // Construct the payload as query parameters
+        const params = new URLSearchParams({
+            text: message,   // User's input
+            token: access_token // Token from environment variable
+        });
+    
+        // Make the API GET request
         fetch(`${url}?${params.toString()}`)
             .then(response => {
-                console.log("Response status code:", response.status);
-
-                return response.json().then(data => {
-                    console.log("Response JSON:", data);
-
-                    const text = data.result ;
-                    // || "Sorry, I didn't understand.";
-                    displayBotMessage(text);
-                });
+                if (!response.ok) {
+                    // If response status is not OK, throw an error to catch block
+                    return response.text().then(errText => {
+                        throw new Error(errText); // Include error text in the error object
+                    });
+                }
+                return response.text();
+            })
+            .then(data => {
+                console.log("Response Text:", data);
+    
+                let responseText;
+                try {
+                    responseText = JSON.parse(data).result || "Sorry, I didn't understand.";
+                } catch (e) {
+                    responseText = data || "Unexpected response from the server.";
+                }
+    
+                displayBotMessage(responseText); // Display the bot's response
             })
             .catch(error => {
                 console.error('Error:', error);
-                displayBotMessage("There is some error");
+                displayBotMessage(`Error occurred: ${error.message}`); // Display error message
             });
     }
+    
   
     // Function to display bot's message https://huggingface.co/spaces/Lalit1997/all-in-one-summarizer
     function displayBotMessage(message) {
