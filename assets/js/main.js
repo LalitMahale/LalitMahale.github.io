@@ -637,10 +637,14 @@
     }
   
     // Function to send a message to the backend
+    require('dotenv').config();
+
+    const access_token = process.env.TOKEN;
+
     function sendMessageToBackend(message) {
         const url =  "https://lalit1997-test-api.hf.space/chatbot";
 
-        const params = new URLSearchParams({ text: message });
+        const params = new URLSearchParams({ text: message ,token :access_token });
 
         fetch(`${url}?${params.toString()}`)
             .then(response => {
@@ -649,7 +653,8 @@
                 return response.json().then(data => {
                     console.log("Response JSON:", data);
 
-                    const text = data.result || "Sorry, I didn't understand.";
+                    const text = data.result ;
+                    // || "Sorry, I didn't understand.";
                     displayBotMessage(text);
                 });
             })
