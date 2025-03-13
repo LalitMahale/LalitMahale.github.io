@@ -601,7 +601,11 @@
     function handleOption(option) {
         if (option === 'Projects') {
             showProjectOptions();
-        } else if (option === 'About Me') {
+        } 
+          else if (option == "Certificate") {
+            showProjectOptions();
+          }
+          else if (option === 'About Me') {
             displayUserMessage("About Me");
             displayBotMessage("👋 Hi I'm Lalit Mahale. I'm AI/ML Expert. For More detail 🤙call at 📱 8087830153");
         } else if (option === 'Help') {
@@ -678,7 +682,7 @@
   
     // Function to display bot's message https://huggingface.co/spaces/Lalit1997/all-in-one-summarizer
     function displayBotMessage(message) {
-        const botMessageDiv = document.createElement('div');
+        const botMessageDiv = documentnm-.createElement('div');
         botMessageDiv.classList.add('bot-message');
         botMessageDiv.textContent = message;
         chatContent.appendChild(botMessageDiv);
