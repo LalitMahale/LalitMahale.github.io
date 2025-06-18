@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document Summarizer</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #e0eafc, #cfdef3);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      background-color: #fff;
+      border-radius: 12px;
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      text-align: center;
+    }
+
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 20px;
+    }
+
+    input[type="file"] {
+      display: block;
+      margin: 20px auto;
+      padding: 10px;
+      font-size: 16px;
+      border: 2px dashed #ccc;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    #summary-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 30px;
+      display: none;
+      color: #34495e;
+    }
+
+    #output {
+      margin-top: 15px;
+      padding: 20px;
+      background-color: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      text-align: left;
+      white-space: pre-wrap;
+      max-height: 300px;
+      overflow-y: auto;
+      color: #2c3e50;
+    }
+
+    #downloadBtn {
+      display: none;
+      margin-top: 20px;
+      background-color: #28a745;
+    }
+
+    #downloadBtn:hover {
+      background-color: #1e7e34;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>📄 Document Summarizer</h2>
+    <input type="file" id="fileInput" />
+    <button id="submitBtn">Submit</button>
+
+    <div id="summary-title">📌 Summary</div>
+    <div id="output"></div>
+
+    <button id="downloadBtn">Download Summary (.txt)</button>
+  </div>
+
+  <script>
+    let summaryText = '';
+
+    document.getElementById("submitBtn").addEventListener("click", async function () {
+      const fileInput = document.getElementById("fileInput");
+      const file = fileInput.files[0];
+      if (!file) {
+        alert("Please choose a file first.");
+        return;
+      }
+
+      const reader = new FileReader();
+
+      reader.onload = async function () {
+        const base64Content = reader.result.split(",")[1];
+        const payload = {
+          filename: file.name,
+          content_type: file.type,
+          base64_file: base64Content
+        };
+
+        try {
+          const res = await fetch("http://localhost:8000/upload_base64", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await res.json();
+          summaryText = data.text || "Upload complete but no summary found.";
+
+          document.getElementById("summary-title").style.display = "block";
+          document.getElementById("output").innerText = summaryText;
+          document.getElementById("downloadBtn").style.display = "inline-block";
+
+        } catch (err) {
+          document.getElementById("summary-title").style.display = "none";
+          document.getElementById("output").innerText = "Error: " + err.message;
+          document.getElementById("downloadBtn").style.display = "none";
+        }
+      };
+
+      reader.readAsDataURL(file);
+    });
+
+    document.getElementById("downloadBtn").addEventListener("click", function () {
+      const blob = new Blob([summaryText], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "summary.txt";
+      link.click();
+      URL.revokeObjectURL(link.href);
+    });
+  </script>
+</body>
+</html>
