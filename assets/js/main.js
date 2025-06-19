@@ -614,7 +614,7 @@
     // Show project options
     function showProjectOptions() {
         optionsContainer.innerHTML = `
-            <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
+            <button class="chat-option" data-link="project\doc_summarizer.html">Document Summarizer</button>
             <button class="chat-option" data-link="https://example.com/project2">Option 2</button>
             <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
             <button class="chat-option" data-link="https://example.com/project2">Option 2</button>
