@@ -643,49 +643,65 @@
   
     // Function to send a message to the backend
     function sendMessageToBackend(message) {
-        const url = "https://lalit1997-test-api.hf.space/translate";
-
-        const params = new URLSearchParams({ text: message });
-
-        fetch(`${url}?${params.toString()}`)
-            .then(response => {
-                console.log("Response status code:", response.status);
-
-                return response.json().then(data => {
-                    console.log("Response JSON:", data);
-
-                    const text = data.result || "Sorry, I didn't understand.";
-                    displayBotMessage(text);
-                });
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                displayBotMessage("There is some error");
-            });
-    }
+      const url = "https://lalit1997-test-api.hf.space/chatbot";
   
-    // Function to display bot's message
-    function displayBotMessage(message) {
-        const botMessageDiv = document.createElement('div');
-        botMessageDiv.classList.add('bot-message');
-        botMessageDiv.textContent = message;
-        chatContent.appendChild(botMessageDiv);
-        scrollToBottom();
-    }
+      // Construct the payload as query parameters
+      const params = new URLSearchParams({
+          text: message, // User's input
+          token: 'AIzaSyB3wI2r6ZgQnYQ3V39PX5S0zWSRqy5ldYw_Lalit' // If your backend expects this
+      });
   
-    // Function to display user's message
-    function displayUserMessage(message) {
-        const userMessageDiv = document.createElement('div');
-        userMessageDiv.classList.add('user-message');
-        userMessageDiv.textContent = message;
-        chatContent.appendChild(userMessageDiv);
-        scrollToBottom();
-    }
+      // Make the API GET request
+      fetch(`${url}?${params.toString()}`)
+          .then(response => {
+              if (!response.ok) {
+                  // If response status is not OK, throw an error to catch block
+                  return response.text().then(errText => {
+                      throw new Error(errText);
+                  });
+              }
+              return response.text();
+          })
+          .then(data => {
+              console.log("Response Text:", data);
+  
+              let responseText;
+              try {
+                  responseText = JSON.parse(data).result || "Sorry, I didn't understand.";
+              } catch (e) {
+                  responseText = data || "Unexpected response from the server.";
+              }
+  
+              displayBotMessage(responseText); // Display the bot's response
+          })
+          .catch(error => {
+              console.error('Error:', error);
+              displayBotMessage(`Error occurred: ${error.message}`); // Display error message
+          });
+  }
+  
+// Function to display bot's message
+function displayBotMessage(message) {
+  const botMessageDiv = document.createElement('div'); // ✅ Fixed typo here
+  botMessageDiv.classList.add('bot-message');
+  botMessageDiv.textContent = message;
+  chatContent.appendChild(botMessageDiv);
+  scrollToBottom();
+}
+
+// Function to display user's message
+function displayUserMessage(message) {
+  const userMessageDiv = document.createElement('div');
+  userMessageDiv.classList.add('user-message');
+  userMessageDiv.textContent = message;
+  chatContent.appendChild(userMessageDiv);
+  scrollToBottom();
+}
   
     // Scroll to the bottom of the chat content
     function scrollToBottom() {
-        chatContent.scrollTop = chatContent.scrollHeight;
-    }
+      chatContent.scrollTop = chatContent.scrollHeight;
+  }
 });
 
 
