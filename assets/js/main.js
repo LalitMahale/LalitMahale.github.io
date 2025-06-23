@@ -678,7 +678,7 @@ function sendMessageToBackend(message) {
 function displayBotMessage(message) {
   const botMessageDiv = document.createElement('div'); // ✅ Fixed typo here
   botMessageDiv.classList.add('bot-message');
-  botMessageDiv.textContent = message;
+  botMessageDiv.innerHTML = marked.parse(message);
   chatContent.appendChild(botMessageDiv);
   scrollToBottom();
 }
@@ -687,7 +687,7 @@ function displayBotMessage(message) {
 function displayUserMessage(message) {
   const userMessageDiv = document.createElement('div');
   userMessageDiv.classList.add('user-message');
-  userMessageDiv.textContent = message;
+  userMessageDiv.innerHTML = message;
   chatContent.appendChild(userMessageDiv);
   scrollToBottom();
 }
