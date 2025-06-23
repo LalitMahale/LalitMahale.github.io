@@ -616,7 +616,7 @@
         optionsContainer.innerHTML = `
             <button class="chat-option" data-link="project/doc_summarizer.html">Document Summarizer</button>
             <button class="chat-option" data-link="project/rag_chatbot.html">RAG Chtbot</button>
-            <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
+            <button class="chat-option" data-link="project/fitness_chatbot.html">Personal Fitness Bot</button>
             <button class="chat-option" data-link="https://example.com/project2">Option 2</button>
             <button class="chat-option" data-link="https://example.com/project1">Option 1</button>
             <button class="chat-option" data-link="https://example.com/project2">Option 2</button>            
