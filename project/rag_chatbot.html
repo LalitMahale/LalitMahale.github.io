@@ -8,7 +8,8 @@
     body {
       margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #e3f2fd, #ffffff);
+      background: url('../assets/img/portfolio/chatbot_background.png') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       justify-content: center;
       align-items: flex-start;
@@ -17,9 +18,9 @@
     }
 
     .container {
-      background-color: #fff;
+      background-color: rgba(255, 255, 255, 0.92); /* semi-transparent background */
       border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
       width: 100%;
       max-width: 600px;
       padding: 30px;
@@ -179,7 +180,7 @@
       const message = input.value.trim();
       if (!message) return;
 
-      appendMessage("user", "👨‍🦱 "+message);
+      appendMessage("user", "👨‍🦱 " + message);
       input.value = "";
 
       const response = await fetch("http://localhost:8000/chat", {
@@ -189,7 +190,7 @@
       });
 
       const data = await response.json();
-      appendMessage("bot", "🤖 "+data.reply || "No reply from server.");
+      appendMessage("bot", "🤖 " + (data.reply || "No reply from server."));
     }
 
     function appendMessage(sender, text) {

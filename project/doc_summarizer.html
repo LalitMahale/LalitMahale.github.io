@@ -7,22 +7,22 @@
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #e0eafc, #cfdef3);
       margin: 0;
       padding: 0;
+      background: url('../assets/img/portfolio/summary.png') no-repeat center center fixed;
+      background-size: cover;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
     }
-
     .container {
-      background-color: #fff;
+      background-color: rgba(255, 255, 255, 0.92);
       border-radius: 12px;
       padding: 40px;
       max-width: 600px;
       width: 100%;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
       text-align: center;
     }
 
@@ -40,6 +40,7 @@
       border-radius: 8px;
       cursor: pointer;
       width: 100%;
+      background-color: #f0f0f0;
     }
 
     button {
@@ -87,6 +88,12 @@
 
     #downloadBtn:hover {
       background-color: #1e7e34;
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
     }
   </style>
 </head>
