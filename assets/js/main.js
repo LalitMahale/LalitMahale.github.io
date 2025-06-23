@@ -642,43 +642,37 @@
     }
   
     // Function to send a message to the backend
-    function sendMessageToBackend(message) {
-      const url = "https://lalit1997-test-api.hf.space/chatbot";
-  
-      // Construct the payload as query parameters
-      const params = new URLSearchParams({
-          text: message, // User's input
-          token: 'AIzaSyB3wI2r6ZgQnYQ3V39PX5S0zWSRqy5ldYw_Lalit' // If your backend expects this
-      });
-  
-      // Make the API GET request
-      fetch(`${url}?${params.toString()}`)
-          .then(response => {
-              if (!response.ok) {
-                  // If response status is not OK, throw an error to catch block
-                  return response.text().then(errText => {
-                      throw new Error(errText);
-                  });
-              }
-              return response.text();
-          })
-          .then(data => {
-              console.log("Response Text:", data);
-  
-              let responseText;
-              try {
-                  responseText = JSON.parse(data).result || "Sorry, I didn't understand.";
-              } catch (e) {
-                  responseText = data || "Unexpected response from the server.";
-              }
-  
-              displayBotMessage(responseText); // Display the bot's response
-          })
-          .catch(error => {
-              console.error('Error:', error);
-              displayBotMessage(`Error occurred: ${error.message}`); // Display error message
-          });
-  }
+function sendMessageToBackend(message) {
+    const url = "https://lalit1997-test-api.hf.space/chatbot";
+
+    fetch(url, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            text: message,
+            token: "AIzaSyB3wI2r6ZgQnYQ3V39PX5S0zWSRqy5ldYw_Lalit"
+        })
+    })
+    .then(response => {
+        if (!response.ok) {
+            return response.text().then(errText => {
+                throw new Error(errText);
+            });
+        }
+        return response.json();
+    })
+    .then(data => {
+        const responseText = data.result || "Sorry, I didn't understand.";
+        displayBotMessage(responseText);
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        displayBotMessage(`Error occurred: ${error.message}`);
+    });
+}
+
   
 // Function to display bot's message
 function displayBotMessage(message) {
