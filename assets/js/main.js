@@ -698,5 +698,4 @@ function displayUserMessage(message) {
   }
 });
 
-
 })();

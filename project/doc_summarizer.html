@@ -3,44 +3,53 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <div class="container">
+
+  <!-- 🔙 Navigation Button -->
+  <div style="text-align: left; margin-bottom: 20px;">
+    <button onclick="window.location.href='https://lalitmahale.github.io';" style="padding: 8px 16px; font-size: 14px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">
+      ⬅ Protfolio Page
+    </button>
+    <!-- <button onclick="window.location.href='https://your-main-website.com';" style="padding: 8px 16px; font-size: 14px; background-color: #6c757d; color: white; border: none; border-radius: 6px; cursor: pointer;">
+      ⬅ Back to Projects
+    </button> -->
+  </div>
+  
   <title>Document Summarizer</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
       padding: 0;
-      background: url('../assets/img/portfolio/summary.png') no-repeat center center fixed;
-      background-size: cover;
+      background: #f0f2f5;
       display: flex;
       align-items: center;
       justify-content: center;
       height: 100vh;
     }
+
     .container {
-      background-color: rgba(255, 255, 255, 0.92);
+      background-color: #fff;
       border-radius: 12px;
       padding: 40px;
       max-width: 600px;
       width: 100%;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       text-align: center;
     }
 
     h2 {
       color: #2c3e50;
-      margin-bottom: 20px;
     }
 
     input[type="file"] {
       display: block;
       margin: 20px auto;
       padding: 10px;
-      font-size: 16px;
       border: 2px dashed #ccc;
       border-radius: 8px;
       cursor: pointer;
       width: 100%;
-      background-color: #f0f0f0;
     }
 
     button {
@@ -52,7 +61,6 @@
       border-radius: 8px;
       cursor: pointer;
       margin-top: 10px;
-      transition: background-color 0.3s ease;
     }
 
     button:hover {
@@ -61,7 +69,6 @@
 
     #summary-title {
       font-size: 20px;
-      font-weight: 600;
       margin-top: 30px;
       display: none;
       color: #34495e;
@@ -90,10 +97,24 @@
       background-color: #1e7e34;
     }
 
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
+    #loading {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .spinner {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #007bff;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -103,11 +124,17 @@
     <input type="file" id="fileInput" />
     <button id="submitBtn">Submit</button>
 
+    <div id="loading">
+      <div class="spinner"></div>
+      <div style="margin-top: 10px; color: #007bff;">Please wait, summarizing...</div>
+    </div>
+
     <div id="summary-title">📌 Summary</div>
     <div id="output"></div>
 
     <button id="downloadBtn">Download Summary (.txt)</button>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 
   <script>
     let summaryText = '';
@@ -120,6 +147,12 @@
         return;
       }
 
+      // Show loader
+      document.getElementById("loading").style.display = "block";
+      document.getElementById("summary-title").style.display = "none";
+      document.getElementById("output").innerText = "";
+      document.getElementById("downloadBtn").style.display = "none";
+
       const reader = new FileReader();
 
       reader.onload = async function () {
@@ -127,11 +160,12 @@
         const payload = {
           filename: file.name,
           content_type: file.type,
-          base64_file: base64Content
+          base64_file: base64Content,
+          token: "AIzaSyB3wI2r6ZgQnYQ3V39PX5S0zWSRqy5ldYw_Lalit"
         };
 
         try {
-          const res = await fetch("https://lalit1997-test-api.hf.space/summarizer", {
+          const res = await fetch("http://127.0.0.1:8000/summarizer", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
@@ -141,13 +175,13 @@
           summaryText = data.text || "Upload complete but no summary found.";
 
           document.getElementById("summary-title").style.display = "block";
-          document.getElementById("output").innerText = summaryText;
+          document.getElementById("output").innerHTML = marked.parse(summaryText);
           document.getElementById("downloadBtn").style.display = "inline-block";
 
         } catch (err) {
-          document.getElementById("summary-title").style.display = "none";
           document.getElementById("output").innerText = "Error: " + err.message;
-          document.getElementById("downloadBtn").style.display = "none";
+        } finally {
+          document.getElementById("loading").style.display = "none";
         }
       };
 
@@ -165,3 +199,4 @@
   </script>
 </body>
 </html>
+  
